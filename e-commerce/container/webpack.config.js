@@ -9,9 +9,10 @@ module.exports={
 
     plugins:[
         new ModuleFederationPlugin({
-            name:'container',
+            name:'container', ///there is host but must be need for remotes MFe(microfrontends)
             remotes:{
-                products:'products@http://localhost:8081/remoteEntry.js'
+                productsApp:'products@http://localhost:8081/remoteEntry.js' //url for the remote entry file
+                   //        |_______________________> related to name in Product project webpack.config.js
             },
 
 

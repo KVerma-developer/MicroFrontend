@@ -1,0 +1,328 @@
+-: Let's now take a look
+
+what the Module Federation plugin does
+
+for our container application.
+
+So, we're gonna take a look at a very similar diagram.
+
+The first thing I want to address
+
+is the fact that we had created a second file
+
+called bootstrap.js
+
+when we did the integration process.
+
+So, back inside of our editor,
+
+here's my container application.
+
+We now have a bootstrap.js file
+
+which contains our actual application code
+
+and an index.js file.
+
+And inside of index.js,
+
+all we are really doing here is importing the bootstrap file
+
+and nothing else.
+
+And what's more,
+
+we're using some different syntax for the import.
+
+So, what is this index.js file all about
+
+and why do we add it in?
+
+Well, this really gives Webpack the opportunity to realize
+
+that before executing that bootstrap.js file,
+
+we have to go and fetch some code from the products project.
+
+That's what the index.js file is for.
+
+It is just to allow Webpack that opportunity
+
+to go and get some additional JavaScript
+
+and make sure that we've got the project code
+
+or something the products code ready
+
+along with the faker code ready as well
+
+before we try to actually do something with it.
+
+When we actually execute the contents
+
+of the bootstrap.js file,
+
+the expectation is that we will have access to this module
+
+and all the different dependencies that it requires.
+
+So, if we tried to go directly into our bootstrap.js file,
+
+in other words if we tried to execute this first,
+
+we would end up with an error.
+
+We would end up with some kind of message that says,
+
+"Sorry, but we don't have any code for products.
+
+We don't know where to get that code.
+
+We don't have it available."
+
+So, by adding in the index.js file,
+
+we are just giving Webpack an opportunity inside the browser
+
+to go and fetch some dependencies from products
+
+before actually executing the code of Bootstrap.
+
+We can kind of see this rather easily inside the browser.
+
+So, if we go back over to our browser,
+
+open up that network request tab again,
+
+we could take a look at that main.js file.
+
+So, if you click on it
+
+and go to either a preview or response,
+
+you can then go down to the very, very bottom of the file
+
+and then scroll back up just a little bit
+
+and you might see an entry right here
+
+for source index.js.
+
+This is the index.js file inside of our container.
+
+We once again have this string with all the code from it.
+
+You'll see that the code has been transformed a little bit.
+
+And so now, rather than just having something that says,
+
+"import bootstrap",
+
+we've now got something that says,
+
+"require in bootstrap js or source bootstrap js."
+
+And then after that, try to execute the code inside of it.
+
+So long story short, once again,
+
+this is really just giving us
+
+or really giving Webpack the opportunity
+
+to go and fetch some code from products
+
+before running our index.js file.
+
+Okay. So, back over to this diagram.
+
+So again, inside of our container,
+
+we've got the index.js file.
+
+That's really generating main.js
+
+and then our Bootstrap is really being output
+
+as a separate file.
+
+We first run main.js.
+
+That's going to try to fetch some additional code
+
+from products
+
+and then execute the code inside of bootstrap js.
+
+Now, let's start to put our container
+
+and our product stuff together
+
+inside of one diagram
+
+and understand the real flow of what's going on.
+
+Okay.
+
+So, in the browser, we've got a series of steps that go on.
+
+We've then got whatever is coming out
+
+of our Webpack Dev Server for container
+
+and on the right, we've got products.
+
+When we first go to localhost:8080,
+
+the first thing you do
+
+is download and execute the main.js file
+
+from our container.
+
+Once we execute that file,
+
+Webpack then sees a required statement saying that,
+
+Oh, we need to import and somehow execute bootstrap.js.
+
+So, Webpack is gonna start to download that file.
+
+As it starts to download that file,
+
+Webpack also realizes
+
+that it needs something from the products project
+
+in order to execute Bootstrap.
+
+So simultaneously,
+
+as it starts to download bootstrap.js,
+
+Webpack inside the browser is going to fetch remoteEntry
+
+from our products application.
+
+This remoteEntry.js file says that
+
+in order to run bootstrap.js,
+
+we have to download source index.js
+
+and faker from products as well.
+
+So, Webpack is gonna download source index.js
+
+and everything for faker.
+
+Once it has completed the download for Bootstrap,
+
+for source index and for faker,
+
+now it finally has all the code that is needed
+
+to actually execute Bootstrap.
+
+So, it runs the code inside of Bootstrap.
+
+We've got everything from products
+
+including the source index.js file
+
+and faker over there as well.
+
+Another way that we can really verify this entire process
+
+is by taking a look
+
+at the sequence of requests that are being executed.
+
+So, back over here inside of our network request log,
+
+we can take a look at the waterfall chart.
+
+So, inside of our waterfall chart,
+
+you'll see that the first thing happens
+
+is we download and execute the main.js file.
+
+Once we execute that file,
+
+we then realize, okay, we also need something from products
+
+and we need that bootstrap file.
+
+So simultaneously,
+
+Webpack goes to download the bootstrap file
+
+and it also knows
+
+that it needs to download the remote entry file
+
+to figure out how to get some code
+
+from the products project.
+
+Once it gets the remote entry file,
+
+it then sets up another two requests
+
+to get the faker JS stuff and the index.js stuff
+
+from products.
+
+So, it's only when these two requests right here
+
+are finished
+
+and we get the ability to execute the code from products,
+
+that essentially all three of these different files are ran.
+
+The bootstrap, faker and index.js.
+
+That's what's going on behind the scenes.
+
+Okay. So, all the stuff I know is pretty intense.
+
+There's a lot of stuff going on here
+
+with this Module Federation stuff
+
+and it actually even goes deeper than what I presented.
+
+It turns out
+
+that there's a lot of extra corner cases
+
+around handling dependencies
+
+for stuff like faker.
+
+We're going to explore some of that
+
+as soon as we start to add in our final micro front end,
+
+which is the cart application.
+
+So, let's take a pause right here.
+
+We're gonna come back in the next video
+
+and make one or two changes to our products project.
+
+I wanna point out one or two things around it
+
+that is not quite great right now.
+
+In some ways, we could probably improve
+
+some of the structure of our code.
+
+So, quick pause,
+
+and we'll do some improvements in just a moment.
+
