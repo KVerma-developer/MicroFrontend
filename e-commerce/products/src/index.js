@@ -5,7 +5,8 @@ let products = '';
 
 for (let i = 0; i < 5; i++) {
     const name = faker.commerce.productName();
-    products += `<div>${name},${products.length}</div>`;
+    products += `<div><ul>
+    <li>${name}</li></ul></div>`;
   }
   console.log(products);
 
