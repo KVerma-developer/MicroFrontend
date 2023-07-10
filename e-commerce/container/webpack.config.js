@@ -9,11 +9,10 @@ module.exports={
 
     plugins:[
         new ModuleFederationPlugin({
-            name:'products',
-            filename:'remoteEntry.js',
-            exposes:{
-                './ProductIndex':'./src/index'
-            }
+            name:'container',
+            remotes:{
+                products:'products@http://localhost:8081/remoteEntry.js'
+            },
 
 
         }),
