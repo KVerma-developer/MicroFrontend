@@ -1,0 +1,3 @@
+# singleton 
+singleton means we shared only one copy of faker or a library not a multiple of versions
+When it comes to microfrontends, where multiple frontend applications work together to form a larger system, you may encounter scenarios where you need to share data or functionality between different microfrontends. In such cases, you can apply the singleton pattern to create a shared instance that can be accessed by all the microfrontends.

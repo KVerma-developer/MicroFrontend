@@ -11,7 +11,13 @@ module.exports={
         new ModuleFederationPlugin({
             name:"cart",
             filename:"remoteEntry.js",
-            exposes:{ "./CartShow":"./src/index.js"}
+            exposes:{ "./CartShow":"./src/index.js"},
+            // shared:['faker']
+            shared:{
+                faker:{
+                    singleton:true //
+                }
+            }
         }),
         new HtmlWebpackPlugin({
             template:"./public/index.html"
